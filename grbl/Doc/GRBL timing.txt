@@ -1,0 +1,10 @@
+Timing of different grbl processes:
+
+Conditions: connected, 50 rpm, 4 sync pulses, idle
+Proccessing of Index and Sync pulses:		3.2 us
+protocol_exec_rt_system frequentie:			50 kHz 
+
+Conditions: connected, 50 rpm, 4 sync pulses, threading SS
+Proccessing of Index and Sync pulses:		 5..30 us
+protocol_exec_rt_system frequentie:			50 kHz 
+

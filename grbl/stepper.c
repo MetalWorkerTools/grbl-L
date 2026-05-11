@@ -672,13 +672,13 @@ void st_prep_buffer()
           // Setup laser mode variables. PWM rate adjusted motions will always complete a motion with the
           // spindle off. 
           st_prep_block->is_pwm_rate_adjusted = false;
-          if (settings.flags & BITFLAG_LASER_MODE) {
-            if (pl_block->condition & PL_COND_FLAG_SPINDLE_CCW) { 
-              // Pre-compute inverse programmed rate to speed up PWM updating per step segment.
-              prep.inv_rate = 1.0/pl_block->programmed_rate;
-              st_prep_block->is_pwm_rate_adjusted = true; 
-            }
-          }
+          // if (settings.flags & BITFLAG_LASER_MODE) {
+          //   if (pl_block->condition & PL_COND_FLAG_SPINDLE_CCW) { 
+          //     // Pre-compute inverse programmed rate to speed up PWM updating per step segment.
+          //     prep.inv_rate = 1.0/pl_block->programmed_rate;
+          //     st_prep_block->is_pwm_rate_adjusted = true; 
+          //   }
+          // }
         #endif
       }
 

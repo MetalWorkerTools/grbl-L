@@ -442,7 +442,7 @@ void protocol_exec_rt_system()
   if (rt_exec) {
     system_clear_exec_motion_overrides(); // Clear all motion override flags.
 
-    uint8_t new_f_override =  sys.f_override;
+    uint16_t new_f_override =  sys.f_override;
     if (rt_exec & EXEC_FEED_OVR_RESET) { new_f_override = DEFAULT_FEED_OVERRIDE; }
     if (rt_exec & EXEC_FEED_OVR_COARSE_PLUS) { new_f_override += FEED_OVERRIDE_COARSE_INCREMENT; }
     if (rt_exec & EXEC_FEED_OVR_COARSE_MINUS) { new_f_override -= FEED_OVERRIDE_COARSE_INCREMENT; }
@@ -470,7 +470,7 @@ void protocol_exec_rt_system()
     system_clear_exec_accessory_overrides(); // Clear all accessory override flags.
 
     // NOTE: Unlike motion overrides, spindle overrides do not require a planner reinitialization.
-    uint8_t last_s_override =  sys.spindle_speed_ovr;
+    uint16_t last_s_override =  sys.spindle_speed_ovr;
     if (rt_exec & EXEC_SPINDLE_OVR_RESET) { last_s_override = DEFAULT_SPINDLE_SPEED_OVERRIDE; }
     if (rt_exec & EXEC_SPINDLE_OVR_COARSE_PLUS) { last_s_override += SPINDLE_OVERRIDE_COARSE_INCREMENT; }
     if (rt_exec & EXEC_SPINDLE_OVR_COARSE_MINUS) { last_s_override -= SPINDLE_OVERRIDE_COARSE_INCREMENT; }
@@ -705,13 +705,13 @@ static void protocol_exec_rt_suspend()
             if (gc_state.modal.spindle != SPINDLE_DISABLE) {
               // Block if safety door re-opened during prior restore actions.
               if (bit_isfalse(sys.suspend,SUSPEND_RESTART_RETRACT)) {
-                if (bit_istrue(settings.flags,BITFLAG_LASER_MODE)) {
-                  // When in laser mode, ignore spindle spin-up delay. Set to turn on laser when cycle starts.
-                  bit_true(sys.step_control, STEP_CONTROL_UPDATE_SPINDLE_PWM);
-                } else {
+                // if (bit_istrue(settings.flags,BITFLAG_LASER_MODE)) {
+                //   // When in laser mode, ignore spindle spin-up delay. Set to turn on laser when cycle starts.
+                //   bit_true(sys.step_control, STEP_CONTROL_UPDATE_SPINDLE_PWM);
+                // } else {
                   spindle_set_state((restore_condition & (PL_COND_FLAG_SPINDLE_CW | PL_COND_FLAG_SPINDLE_CCW)), restore_spindle_speed);
                   delay_sec(SAFETY_DOOR_SPINDLE_DELAY, DELAY_MODE_SYS_SUSPEND);
-                }
+                // }
               }
             }
             if (gc_state.modal.coolant != COOLANT_DISABLE) {
@@ -770,12 +770,12 @@ static void protocol_exec_rt_suspend()
           } else if (sys.spindle_stop_ovr & (SPINDLE_STOP_OVR_RESTORE | SPINDLE_STOP_OVR_RESTORE_CYCLE)) {
             if (gc_state.modal.spindle != SPINDLE_DISABLE) {
               report_feedback_message(MESSAGE_SPINDLE_RESTORE);
-              if (bit_istrue(settings.flags,BITFLAG_LASER_MODE)) {
-                // When in laser mode, ignore spindle spin-up delay. Set to turn on laser when cycle starts.
-                bit_true(sys.step_control, STEP_CONTROL_UPDATE_SPINDLE_PWM);
-              } else {
+              // if (bit_istrue(settings.flags,BITFLAG_LASER_MODE)) {
+                // // When in laser mode, ignore spindle spin-up delay. Set to turn on laser when cycle starts.
+                // bit_true(sys.step_control, STEP_CONTROL_UPDATE_SPINDLE_PWM);
+              // } else {
                 spindle_set_state((restore_condition & (PL_COND_FLAG_SPINDLE_CW | PL_COND_FLAG_SPINDLE_CCW)), restore_spindle_speed);
-              }
+              // }
             }
             if (sys.spindle_stop_ovr & SPINDLE_STOP_OVR_RESTORE_CYCLE) {
               system_set_exec_state_flag(EXEC_CYCLE_START);  // Set to resume program.

@@ -364,6 +364,8 @@ void report_build_info(char *line)
   #endif
   serial_write('X'); // Extended lathe command set
   serial_write('1'); // Extended lathe command set Version 1: G33 spindle synchronization support for threading.
+  serial_write('X'); // Extended lathe command 
+  serial_write('2'); // Extended lathe command 2: max speed override 1000 % for constant surface speed.
   #ifdef COREXY
     serial_write('C');
   #endif
@@ -582,11 +584,11 @@ void report_realtime_status()
         sys.report_ovr_counter = (REPORT_OVR_REFRESH_BUSY_COUNT-1); // Reset counter for slow refresh
       } else { sys.report_ovr_counter = (REPORT_OVR_REFRESH_IDLE_COUNT-1); }
       printPgmString(PSTR("|Ov:"));
-      print_uint8_base10(sys.f_override);
+      print_uint32_base10((uint32_t)sys.f_override);
       serial_write(',');
       print_uint8_base10(sys.r_override);
       serial_write(',');
-      print_uint8_base10(sys.spindle_speed_ovr);
+      print_uint32_base10((uint32_t)sys.spindle_speed_ovr);
 
       uint8_t sp_state = spindle_get_state();
       uint8_t cl_state = coolant_get_state();

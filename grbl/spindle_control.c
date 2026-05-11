@@ -242,9 +242,9 @@ void spindle_stop()
   
     #ifdef VARIABLE_SPINDLE
       // NOTE: Assumes all calls to this function is when Grbl is not moving or must remain off.
-      if (settings.flags & BITFLAG_LASER_MODE) { 
-        if (state == SPINDLE_ENABLE_CCW) { rpm = 0.0; } // TODO: May need to be rpm_min*(100/MAX_SPINDLE_SPEED_OVERRIDE);
-      }
+      // if (settings.flags & BITFLAG_LASER_MODE) { 
+      //   if (state == SPINDLE_ENABLE_CCW) { rpm = 0.0; } // TODO: May need to be rpm_min*(100/MAX_SPINDLE_SPEED_OVERRIDE);
+      // }
       spindle_set_speed(spindle_compute_pwm_value(rpm));
     #endif
     #if (defined(USE_SPINDLE_DIR_AS_ENABLE_PIN) && \
