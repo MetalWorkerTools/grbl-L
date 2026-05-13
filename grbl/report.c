@@ -616,14 +616,14 @@ void report_realtime_status()
   #endif
   
   // report the synchronization state (G33)
-  printPgmString(PSTR("|Se:"));
   if (spindle_synchronization_active()) {
+    printPgmString(PSTR("|Se:"));
      printFloat_CoordValue(threading_synchronization_millimeters_error);								// print the synchronization error in the unit set
      bit_false(threading_exec_flags,EXEC_SYNCHRONIZATION_STATE_REPORT);						// clear the flag to avoid reporting the same value again
   }
-  else {
-	printFloat(0,2);
-  }
+  // else {
+	// printFloat(0,2);
+  // }
 
   serial_write('>');
   report_util_line_feed();

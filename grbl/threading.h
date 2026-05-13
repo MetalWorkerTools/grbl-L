@@ -36,6 +36,7 @@ extern float threading_mm_per_index_pulse;                  // Z-axis motion at 
 extern float threading_feed_rate_calculation_factor;        // Factor is used in plan_compute_profile_nominal_speed() and is calculated at threading start for performance reasons.
 
 void threading_init(float K_value);                         // Initializes the G33 threading pass using the K value set in the gcode
+void synchronization_pin_init();                            // Initializes the synchronization pin
 uint32_t timer_tics_passed_since_last_index_pulse();
 void calculate_spindle_rpm();
 void process_spindle_index_pulse();

@@ -37,7 +37,7 @@
 
 // These settings are needed for G33 threading
 // The timer resolution (TIMER_TICS_PER_MINUTE) is defined in config.h
-#define SPINDLE_INDEX_PULSES_BEFORE_START_G33 3L		// The number of sync pulses needed before starting threading. Don't set lower than 3
+#define SPINDLE_INDEX_PULSES_BEFORE_START_G33 1L		// The number of sync pulses needed before starting threading. Don't set lower than 1
 #define MINIMAL_SPINDLE_SPEED_G33 10L					// The minimal spindle speed for threading to start
 
 // Define CPU pin map and default settings.

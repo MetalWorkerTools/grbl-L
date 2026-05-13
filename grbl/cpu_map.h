@@ -123,7 +123,7 @@
   #define CONTROL_FEED_HOLD_BIT     1  // Uno Analog Pin 1
   #define CONTROL_CYCLE_START_BIT   2  // Uno Analog Pin 2
   #define CONTROL_SAFETY_DOOR_BIT   1  // Uno Analog Pin 1 NOTE: Safety door is shared with feed hold. Enabled by config define.
-  #define CONTROL_SPINDLE_SYNC_BIT  5 //  Uno Analog Pin 5 NOTE: Spindle sync is shared with the probe pin
+  #define CONTROL_SPINDLE_SYNC_BIT  4 //  Uno Analog Pin 4 
   
   #define CONTROL_INT       PCIE1  // Pin change interrupt enable pin
   #define CONTROL_INT_vect  PCINT1_vect
@@ -137,6 +137,13 @@
   #define PROBE_PORT      PORTC
   #define PROBE_BIT       5  // Uno Analog Pin 5
   #define PROBE_MASK      (1<<PROBE_BIT)
+  
+  // Define synchronization switch input pin.
+  #define SYNCHRONIZATION_DDR       DDRC
+  #define SYNCHRONIZATION_PIN       PINC
+  #define SYNCHRONIZATION_PORT      PORTC
+  #define SYNCHRONIZATION_BIT       4  // Uno Analog Pin 4
+  #define SYNCHRONIZATION_MASK      (1<<SYNCHRONIZATION_BIT)
 
   // Variable spindle configuration below. Do not change unless you know what you are doing.
   // NOTE: Only used when variable spindle is enabled.
@@ -152,22 +159,22 @@
   #define SPINDLE_COMB_BIT	        COM2A1
 
   // Prescaled, 8-bit Fast PWM mode.
-  #define SPINDLE_TCCRA_INIT_MASK   ((1<<WGM20) | (1<<WGM21))				// Configures fast PWM mode.
-  // #define SPINDLE_TCCRB_INIT_MASK   (1<<CS20)							// Disable prescaler -> 62.5kHz
-  // #define SPINDLE_TCCRB_INIT_MASK   (1<<CS21)							// 1/8 prescaler -> 7.8kHz (Used in v0.9)
-  // #define SPINDLE_TCCRB_INIT_MASK   ((1<<CS21) | (1<<CS20))				// 1/32 prescaler -> 1.96kHz
-  //#define SPINDLE_TCCRB_INIT_MASK      (1<<CS22)							// 1/64 prescaler -> 0.98kHz (J-tech laser)  4 us/tic, laser not used in lathe version, reduce timer overflow performance penalty
-  //#define SPINDLE_TCCRB_INIT_MASK      ((1<<CS22) | (1<<CS20))			// 1/128 prescaler -> 490 Hz (J-tech laser)  8 us/tic, laser not used in lathe version, reduce timer overflow performance penalty
-  //#define SPINDLE_TCCRB_INIT_MASK      ((1<<CS22) | (1<<CS21))			// 1/256 prescaler -> 245 Hz (J-tech laser) 16 us/tic, laser not used in lathe version, reduce timer overflow performance penalty
-  #define SPINDLE_TCCRB_INIT_MASK      ((1<<CS22) | (1<<CS21) | (1<<CS20))	// 1/1024 prescaler -> 62 Hz (J-tech laser) 64 us/tic, laser not used in lathe version, reduce timer overflow performance penalty
+  #define SPINDLE_TCCRA_INIT_MASK   ((1<<WGM20) | (1<<WGM21))	// Configures fast PWM mode.
+  //#define SPINDLE_TCCRB_INIT_MASK (1<<CS20)							    // Disable prescaler -> 62.5kHz
+  //#define SPINDLE_TCCRB_INIT_MASK (1<<CS21)							    // 1/8 prescaler -> 7.8kHz (Used in v0.9)
+  //#define SPINDLE_TCCRB_INIT_MASK ((1<<CS21) | (1<<CS20))		// 1/32 prescaler -> 1.96kHz, laser not used in lathe version, same frequency as grbl-l-mega version
+  //#define SPINDLE_TCCRB_INIT_MASK (1<<CS22)							    // 1/64 prescaler -> 0.98kHz (J-tech laser)  4 us/tic, laser not used in lathe version, reduce timer overflow performance penalty
+  //#define SPINDLE_TCCRB_INIT_MASK ((1<<CS22) | (1<<CS20))		// 1/128 prescaler -> 490 Hz (J-tech laser)  8 us/tic, laser not used in lathe version, reduce timer overflow performance penalty
+  //#define SPINDLE_TCCRB_INIT_MASK ((1<<CS22) | (1<<CS21))		// 1/256 prescaler -> 245 Hz (J-tech laser) 16 us/tic, laser not used in lathe version, reduce timer overflow performance penalty
+   #define SPINDLE_TCCRB_INIT_MASK  ((1<<CS22) | (1<<CS21) | (1<<CS20))	// 1/1024 prescaler -> 62 Hz (J-tech laser) 64 us/tic, laser not used in lathe version, reduce timer overflow performance penalty
   
   //Timer2 overflow interrupt is used for spindle sync threading
   #define SPINDLE_TIMER_INTERRUPT_MASK_REGISTER TIMSK2
   #define SPINDLE_TIMER_INTERRUPT_MASK_INIT  (1<<TOIE2)
-  //#define TIMER_TICS_PER_MINUTE   15000000UL							    // Timer 2 prescaler 1/64.  The number of timer tics between spindle index pulses when running at 1 RPM.
-  //#define TIMER_TICS_PER_MINUTE    7500000UL	    						// Timer 2 prescaler 1/128.  The number of timer tics between spindle index pulses when running at 1 RPM.
-  //#define TIMER_TICS_PER_MINUTE    3750000UL								// Timer 2 prescaler 1/256.  The number of timer tics between spindle index pulses when running at 1 RPM.
-  #define TIMER_TICS_PER_MINUTE		  937500UL								// Timer 2 prescaler 1/1024.  The number of timer tics between spindle index pulses when running at 1 RPM.
+  //#define TIMER_TICS_PER_MINUTE   15000000UL				// Timer 2 prescaler 1/64.  The number of timer tics between spindle index pulses when running at 1 RPM.
+  //#define TIMER_TICS_PER_MINUTE    7500000UL	    	// Timer 2 prescaler 1/128.  The number of timer tics between spindle index pulses when running at 1 RPM.
+  //#define TIMER_TICS_PER_MINUTE    3750000UL				// Timer 2 prescaler 1/256.  The number of timer tics between spindle index pulses when running at 1 RPM.
+  #define TIMER_TICS_PER_MINUTE		    937500UL				// Timer 2 prescaler 1/1024.  The number of timer tics between spindle index pulses when running at 1 RPM.
   #define TIMER_COUNTER_WIDTH 8												// Timer 2 is an 8 bit counter, used in timekeeper for overflow value_
 
   // NOTE: On the 328p, these must be the same as the SPINDLE_ENABLE settings.

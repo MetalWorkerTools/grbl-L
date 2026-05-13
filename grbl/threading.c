@@ -44,6 +44,17 @@ void threading_init(float K_value)
 	timekeeper_reset();																											// Reset the timekeeper to avoid calculation errors when timer overflow occurs (to be sure)
 	threading_reset();																											// Sets the target position to zero and calculates the next target position
 }
+void synchronization_pin_init()
+{
+  SYNCHRONIZATION_DDR &= ~(SYNCHRONIZATION_MASK); // Configure as input pins
+  #ifdef DISABLE_SYNCHRONIZATION_PIN_PULL_UP
+    SYNCHRONIZATION_PORT &= ~(SYNCHRONIZATION_MASK); // Normal low operation. Requires external pull-down.
+  #else
+    SYNCHRONIZATION_PORT |= SYNCHRONIZATION_MASK;    // Enable internal pull-up resistors. Normal high operation.
+  #endif
+  // invering synchronization pin not implemented, expect to be low active
+  // probe_configure_invert_mask(false); // Initialize invert mask.
+}
 // Reset variables to start the threading
 void threading_reset()
 {
